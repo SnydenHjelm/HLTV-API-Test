@@ -6,6 +6,8 @@ try {
     const fs = require('fs');
 
     app.use(express.static(path.join(__dirname, "../scripts")));
+    app.use(express.static(path.join(__dirname, "../styles")));
+    app.use(express.static(path.join(__dirname, "../components")));
     app.use(express.json());
 
     app.get("/", async (req, resp) => {
@@ -62,17 +64,6 @@ try {
         });
     });
 
-    //Obj structure:
-    /*{
-        "teamName": {
-            player1: playerObj,
-            player2: playerObj,
-            player3: playerObj,
-            player4: playerObj,
-            player5: playerObj
-        }
-    }
-    */
     app.post("/players", async (req, resp) => {
         const body = req.body;
 

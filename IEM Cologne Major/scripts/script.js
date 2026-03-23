@@ -10,6 +10,11 @@ async function getPlayer(id) {
     return reso;
 }
 
+async function getPlayersByTeamName(name) {
+    let players = await getAllPlayers();
+    return players.find((x) => x.name.toLowerCase() === name.toLowerCase());
+}
+
 async function getPlayersFromTeam(team) {
     let resp = await fetch("http://localhost:3000/teams");
     let reso = await resp.json();
@@ -42,6 +47,12 @@ async function getPlayersFromTeam(team) {
     return reso2;
 }
 
+async function getAllTeams() {
+    let resp = await fetch("http://localhost:3000/teams");
+    let reso = await resp.json();
+    return reso;
+}
+
 async function getTeam(id) {
     try {
         let resp = await fetch(`http://localhost:3000/team?id=${id}`);
@@ -61,29 +72,22 @@ async function getTeam(id) {
     }
 }
 
-async function getAllTeams() {
-    let resp = await fetch("http://localhost:3000/teams");
-    let reso = await resp.json();
-    return reso;
+async function getTeamByName(name) {
+    let teams = await getAllTeams();
+    return teams.find((x) => x.name.toLowerCase() === name.toLowerCase());
 }
 
 async function spawnTeams() {
     document.body.innerHTML = "";
     let teams = await getAllTeams();
-    let allPlayers = await getAllPlayers();
-    teams.forEach((x) => {
-        let players = allPlayers.find((y) => y.name === x.name);
-        let div = document.createElement("div");
-        div.innerHTML = `<h2>${x.name}</h2>`;
-        for (let key in players) {
-            if (typeof players[key] !== "object") continue;
-            let p = document.createElement("p");
-            let playerCountry = getCountryBy(players[key].country.name, players[key].country.code);
-            p.textContent = `${players[key].ign} ${playerCountry.flag}`;
-            div.appendChild(p);
-        }
-        document.body.appendChild(div);
-    })
+
+    for (let team of teams) {
+        let players = await getPlayersByTeamName(team.name);
+        let teamCard = document.createElement("team-card");
+        teamCard.team = team;
+        teamCard.players = players;
+        document.body.appendChild(teamCard);
+    }
 }
 
 spawnTeams();
