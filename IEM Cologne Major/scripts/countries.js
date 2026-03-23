@@ -199,8 +199,8 @@ const countries = [
 
 function getCountryBy(name, code) {
     if (name && code) {
-        let byName = countries.find((x) => x.name === name);
-        let byCode = countries.find((x) => x.code === code);
+        let byName = countries.find((x) => x.name.toLowerCase() === name.toLowerCase());
+        let byCode = countries.find((x) => x.code.toLowerCase() === code.toLowerCase());
         if (byName) {
             return byName;
         } else if (byCode) {
@@ -209,9 +209,9 @@ function getCountryBy(name, code) {
             return null;
         }
     } else if (name) {
-        return countries.find((x) => x.name === name);
+        return countries.find((x) => x.name.toLowerCase() === name.toLowerCase());
     } else if (code) {
-        return countries.find((x) => x.code === code);
+        return countries.find((x) => x.code.toLowerCase() === code.toLowerCase());
     } else {
         return null;
     }
