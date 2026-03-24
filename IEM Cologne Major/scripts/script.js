@@ -287,8 +287,8 @@ class Players {
 
 class Teams {
     static async addTeam(teamId) {
-        let team = await Teams.getTeam(teamId);
-        team = team.find((x) => x.id === teamId);
+        let db = await Teams.getTeam(teamId);
+        let team = db.teams.find((x) => x.id === teamId);
         await Players.getPlayersFromTeam(team.name);
     }
     static async getAllTeams() {
@@ -341,3 +341,13 @@ document.querySelector("#popup").style.display = "none";
 document.querySelector("#popup").addEventListener("click", () => {
     document.querySelector("#popup").style.display = "none";
 });
+
+let headerBg = 0;
+setInterval(() => {
+    headerBg++;
+    if (headerBg === 12) headerBg = 0;
+    document.querySelector("header").style.background = `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(/header-bg${headerBg}.jpg)`;
+    document.querySelector("header").style.backgroundRepeat = "no-repeat";
+    document.querySelector("header").style.backgroundSize = "cover";
+    document.querySelector("header").style.backgroundPosition = "center";
+}, 5000)

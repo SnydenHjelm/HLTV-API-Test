@@ -12,7 +12,7 @@ class TeamCard extends HTMLElement {
             <link rel="stylesheet" href="/teamCard.css">
             <div id="left">
                 <img src="${this.team.name}.png" alt="${this.team.name} Logo">
-                <h2>${this.team.alias} ${teamCountry.flag}</h2>
+                <h2>${teamCountry.flag} ${this.team.alias}</h2>
             </div>
             <div id="right"></div>
             `;
@@ -21,7 +21,7 @@ class TeamCard extends HTMLElement {
             <link rel="stylesheet" href="/teamCard.css">
             <div id="left">
                 <img src="${this.team.name}.png" alt="${this.team.name} Logo">
-                <h2>${this.team.name} ${teamCountry.flag}</h2>
+                <h2>${teamCountry.flag} ${this.team.name}</h2>
             </div>
             <div id="right"></div>
             `;
@@ -35,7 +35,8 @@ class TeamCard extends HTMLElement {
             this.shadowRoot.querySelector("#right").appendChild(p);
             p.addEventListener("click", () => {
                 let popup = document.querySelector("#popup");
-                popup.innerHTML = `<h2>${playerCountry.flag} ${this.players[key].name} ${this.players[key].ign}</h2>`;
+                let splitName = this.players[key].name.split(" ");
+                popup.innerHTML = `<h2>${playerCountry.flag} ${splitName[0]} "${this.players[key].ign}" ${splitName[1]}</h2>`;
                 popup.style.display = "flex";
             });
         }
