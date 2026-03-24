@@ -9,6 +9,7 @@ try {
     app.use(express.static(path.join(__dirname, "../styles")));
     app.use(express.static(path.join(__dirname, "../components")));
     app.use(express.static(path.join(__dirname, "../images")));
+    app.use(express.static(path.join(__dirname, "../fonts")));
     app.use(express.json());
 
     app.get("/", async (req, resp) => {
