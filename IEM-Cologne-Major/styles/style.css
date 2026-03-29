@@ -9,6 +9,7 @@
 
 body {
     margin: 0;
+    position: relative;
 }
 
 header {
@@ -44,20 +45,49 @@ header h1, header h2, header h3 {
     padding: 10px;
 }
 
-#popup {
+.popup {
     position: absolute;
     left: 0;
     top: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    height: 100%;
-    width: 100%;
     display: flex;
     color: white;
     justify-content: center;
     align-items: center;
+    height: 100%;
+    width: 100%;
 }
 
-#teams {
+.popup .player {
+    text-align: center;
+    background-color: #1270b6;
+    padding: 20px;
+    border: 1px solid black;
+    box-shadow: 1px 1px 2px 0px;
+}
+
+.popup .player h3 {
+    font-family: head;
+    font-size: 24px;
+}
+
+.popup .player img {
+    height: 250px;
+}
+
+.popup .player p {
+    text-decoration: underline;
+    font-family: Helvetica;
+    font-size: 18px;
+}
+
+.popup .player p:hover {
+    cursor: pointer;
+    color: gray;
+}
+
+
+.teams {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
+    position: relative;
 }

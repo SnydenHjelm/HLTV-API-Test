@@ -324,23 +324,35 @@ class Teams {
 
 
 async function spawnTeams() {
-    document.querySelector("#teams").innerHTML = "";
+    document.querySelector("#stage1").innerHTML = "<div class='popup'></div>";
+    document.querySelector("#stage2").innerHTML = "<div class='popup'></div>";
+    document.querySelector("#stage3").innerHTML = "<div class='popup'></div>";
+
     let teams = await Teams.getAllTeams();
 
     for (let team of teams) {
         let players = await Players.getPlayersByTeamName(team.name);
         let teamCard = document.createElement("team-card");
+        if (stage3.includes(team.name)) {
+            teamCard.stage = "stage3";
+        } else if (stage2.includes(team.name)) {
+            teamCard.stage = "stage2";
+        } else if (stage1.includes(team.name)) {
+            teamCard.stage = "stage1";
+        }
         teamCard.team = team;
         teamCard.players = players;
-        document.querySelector("#teams").appendChild(teamCard);
+        document.querySelector(`#${teamCard.stage}`).appendChild(teamCard);
     }
 }
 
 spawnTeams();
-document.querySelector("#popup").style.display = "none";
-document.querySelector("#popup").addEventListener("click", () => {
-    document.querySelector("#popup").style.display = "none";
-});
+for (let e of document.querySelectorAll(".popup")) {
+    e.style.display = "none";
+    e.addEventListener("click", () => {
+        e.style.display = "none";
+    })
+}
 
 let headerBg = 0;
 setInterval(() => {
@@ -350,4 +362,8 @@ setInterval(() => {
     document.querySelector("header").style.backgroundRepeat = "no-repeat";
     document.querySelector("header").style.backgroundSize = "cover";
     document.querySelector("header").style.backgroundPosition = "center";
-}, 5000)
+}, 5000);
+
+let stage3 = ["Vitality", "Natus Vincere", "FURIA", "Aurora", "PARIVISION", "Falcons", "MOUZ", "The MongolZ"];
+let stage2 = ["9z", "Astralis", "Spirit", "FUT"];
+let stage1 = [];
