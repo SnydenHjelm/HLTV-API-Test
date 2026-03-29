@@ -51,6 +51,7 @@ header h1, header h2, header h3 {
     top: 0;
     display: flex;
     color: white;
+    background-color: rgba(0, 0, 0, 0.5);
     justify-content: center;
     align-items: center;
     height: 100%;
@@ -62,7 +63,7 @@ header h1, header h2, header h3 {
     background-color: #1270b6;
     padding: 20px;
     border: 1px solid black;
-    box-shadow: 1px 1px 2px 0px;
+    border-radius: 10px;
 }
 
 .popup .player h3 {
