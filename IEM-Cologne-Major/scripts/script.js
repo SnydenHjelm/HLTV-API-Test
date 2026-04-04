@@ -44,7 +44,7 @@ class Countries {
         { code: "HR", name: "Croatia", flag: "🇭🇷" },
         { code: "CU", name: "Cuba", flag: "🇨🇺" },
         { code: "CY", name: "Cyprus", flag: "🇨🇾" },
-        { code: "CZ", name: "Czechia", flag: "🇨🇿" },
+        { code: "CZ", name: "Czech Republic", flag: "🇨🇿" },
         { code: "DK", name: "Denmark", flag: "🇩🇰" },
         { code: "DJ", name: "Djibouti", flag: "🇩🇯" },
         { code: "DM", name: "Dominica", flag: "🇩🇲" },
@@ -234,6 +234,31 @@ class Names {
 }
 
 class Players {
+    static async getAllCountries() {
+        let players = await this.getAllPlayers();
+        let countryArr = [];
+        for (let teamObj of players) {
+            for (let key in teamObj) {
+                if (typeof teamObj[key] !== "object") continue;
+                let playerCountry = teamObj[key].country.name;
+                let playerCountryExists = countryArr.find((x) => x.name === playerCountry);
+                if (playerCountryExists) {
+                    playerCountryExists.count++
+                    playerCountryExists.players.push(teamObj[key]);
+                } else {
+                    countryArr.push({
+                        name: playerCountry,
+                        count: 1,
+                        flag: Countries.getCountryBy(playerCountry).flag,
+                        players: [teamObj[key]]
+                    });
+                }
+            }
+        }
+        countryArr = countryArr.sort((a, b) => b.count - a.count);
+        return countryArr;
+    }
+
     static async getAllPlayers() {
         let resp = await fetch("http://localhost:3000/players");
         let reso = await resp.json();
@@ -324,9 +349,6 @@ class Teams {
 
 
 async function spawnTeams() {
-    document.querySelector("#stage1").innerHTML = "<div class='popup'></div>";
-    document.querySelector("#stage2").innerHTML = "<div class='popup'></div>";
-    document.querySelector("#stage3").innerHTML = "<div class='popup'></div>";
 
     let teams = await Teams.getAllTeams();
 
@@ -347,12 +369,10 @@ async function spawnTeams() {
 }
 
 spawnTeams();
-for (let e of document.querySelectorAll(".popup")) {
-    e.style.display = "none";
-    e.addEventListener("click", () => {
-        e.style.display = "none";
-    })
-}
+document.querySelector(".popup").style.display = "none";
+document.querySelector(".popup").addEventListener("click", () => {
+    document.querySelector(".popup").style.display = "none";
+});
 
 let headerBg = 0;
 setInterval(() => {
@@ -365,5 +385,5 @@ setInterval(() => {
 }, 5000);
 
 let stage3 = ["Vitality", "Natus Vincere", "FURIA", "Aurora", "PARIVISION", "Falcons", "MOUZ", "The MongolZ"];
-let stage2 = ["9z", "Astralis", "Spirit", "FUT"];
-let stage1 = [];
+let stage2 = ["9z", "Astralis", "Spirit", "FUT", "G2", "Monte", "paiN", "Legacy"];
+let stage1 = ["GamerLegion", "BetBoom", "B8", "HEROIC"];

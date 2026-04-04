@@ -34,15 +34,25 @@ class TeamCard extends HTMLElement {
             p.textContent = `${playerCountry.flag} ${this.players[key].ign}`;
             this.shadowRoot.querySelector("#right").appendChild(p);
             p.addEventListener("click", () => {
-                let popup = document.querySelector(`#${this.stage} .popup`);
+                let popup = document.querySelector(`.popup`);
                 let splitName = this.players[key].name.split(" ");
-                popup.innerHTML = `
-                <div class="player">
-                    <img src="${this.players[key].image}">
-                    <h3>${playerCountry.flag} ${splitName[0]} "${this.players[key].ign}" ${splitName[1]}</h3>
-                    <p>Close</p>
-                </div>
-                `;
+                if (splitName.length === 2) {
+                    popup.innerHTML = `
+                        <div class="player">
+                            <img src="${this.players[key].image}">
+                            <h3>${playerCountry.flag} ${splitName[0]} "${this.players[key].ign}" ${splitName[1]}</h3>
+                            <p>Close</p>
+                        </div>
+                    `;
+                } else {
+                    popup.innerHTML = `
+                        <div class="player">
+                            <img src="${this.players[key].image}">
+                            <h3>${playerCountry.flag} ${splitName[0]} "${this.players[key].ign}" ${splitName[1]} ${splitName[2]}</h3>
+                            <p>Close</p>
+                        </div>
+                    `;
+                }
                 popup.style.display = "flex";
             });
         }
