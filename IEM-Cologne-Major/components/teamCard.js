@@ -59,7 +59,7 @@ class TeamCard extends HTMLElement {
                 } else if (e.target.offsetParent.id === "stage2") {
                     document.querySelector(".player").style.marginTop = "-5%";
                 } else if (e.target.offsetParent.id) {
-                    document.querySelector(".player").style.marginTop = "45%";
+                    document.querySelector(".player").style.marginTop = "43%";
                 }
             });
         }
