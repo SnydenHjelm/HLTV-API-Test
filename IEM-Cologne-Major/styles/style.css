@@ -9,7 +9,12 @@
 
 body {
     margin: 0;
-    position: relative;
+}
+
+#countries {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin-top: 50px;
 }
 
 header {
@@ -64,7 +69,6 @@ header h1, header h2, header h3 {
     padding: 20px;
     border: 1px solid black;
     border-radius: 10px;
-    margin-top: 50%;
 }
 
 .popup .player h3 {
@@ -85,6 +89,10 @@ header h1, header h2, header h3 {
 .popup .player p:hover {
     cursor: pointer;
     color: gray;
+}
+
+#stages {
+    position: relative;
 }
 
 

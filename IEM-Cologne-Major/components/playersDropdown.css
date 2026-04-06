@@ -1,0 +1,33 @@
+:host {
+    border: 1px solid black;
+    display: block;
+    padding: 10px;
+}
+
+.dropdown-content {
+    font-family: Helvetica;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 18px;
+}
+
+.dropdown-header {
+    margin-bottom: 20px;
+    font-family: Helvetica;
+}
+
+.dropdown-header:hover {
+    cursor: pointer;
+}
+
+h2 {
+    font-family: head;
+}
+
+.hidden {
+    display: none;
+}
+
+.visible {
+    display: flex;
+}

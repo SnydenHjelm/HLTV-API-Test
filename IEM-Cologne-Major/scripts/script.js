@@ -197,7 +197,8 @@ class Countries {
         { code: "XK", name: "Kosovo", flag: "🇽🇰" },
         { code: "AZ", name: "Azerbaijan", flag: "🇦🇿" },
         { code: "EU", name: "Europe", flag: "🇪🇺" },
-        { code: "SAM", name: "South America", flag: "🌎" }
+        { code: "SAM", name: "South America", flag: "🌎" },
+        { code: "NA", name: "North America", flag: "🌎" }
     ];
 
     static getCountryBy(name, code) {
@@ -219,6 +220,16 @@ class Countries {
             return null;
         }
     }
+
+    static async spawnCountryCount() {
+        let countryCount = await Players.getAllCountries();
+        document.querySelector("#countries").innerHTML = "";
+        countryCount.forEach((x) => {
+            let playersDropdown = document.createElement("players-dropdown");
+            playersDropdown.country = x;
+            document.querySelector("#countries").appendChild(playersDropdown);
+        })
+    }
 }
 
 class Names {
@@ -226,6 +237,12 @@ class Names {
         switch (team.name) {
             case "Natus Vincere":
                 team.alias = "NaVi";
+                return team;
+            case "Gaimin Gladiators":
+                team.alias = "GG";
+                return team;
+            case "THUNDER dOWNUNDER":
+                team.alias = "THUdOWN";
                 return team;
             default:
                 return team;
@@ -306,15 +323,21 @@ class Players {
         let resp2 = await fetch(req);
         let reso2 = await resp2.json();
         spawnTeams();
+        Countries.spawnCountryCount();
         return reso2;
     }
 }
 
 class Teams {
     static async addTeam(teamId) {
-        let db = await Teams.getTeam(teamId);
-        let team = db.teams.find((x) => x.id === teamId);
-        await Players.getPlayersFromTeam(team.name);
+        try {
+            let db = await Teams.getTeam(teamId);
+            let team = db.teams.find((x) => x.id === teamId);
+            await Players.getPlayersFromTeam(team.name);
+            return "team added";
+        } catch (e) {
+            console.log(e);
+        }
     }
     static async getAllTeams() {
         let resp = await fetch("http://localhost:3000/teams");
@@ -327,7 +350,6 @@ class Teams {
             let resp = await fetch(`http://localhost:3000/team?id=${id}`);
             if (resp.ok) {
                 let reso = await resp.json();
-                console.log("team added");
                 await spawnTeams();
                 return reso;
             } else {
@@ -345,10 +367,24 @@ class Teams {
         let teams = await Teams.getAllTeams();
         return teams.find((x) => x.name.toLowerCase() === name.toLowerCase());
     }
+
+    static async getTeamByPlayer(ign) {
+        let teams = await Teams.getAllTeams();
+        for (let team of teams) {
+            for (let player of team.players) {
+                if (player.name.toLowerCase() === ign.toLowerCase()) return team;
+            }
+        }
+
+        return false;
+    }
 }
 
 
 async function spawnTeams() {
+    document.querySelector("#stage3").innerHTML = "";
+    document.querySelector("#stage2").innerHTML = "";
+    document.querySelector("#stage1").innerHTML = "";
 
     let teams = await Teams.getAllTeams();
 
@@ -369,6 +405,7 @@ async function spawnTeams() {
 }
 
 spawnTeams();
+Countries.spawnCountryCount();
 document.querySelector(".popup").style.display = "none";
 document.querySelector(".popup").addEventListener("click", () => {
     document.querySelector(".popup").style.display = "none";
@@ -386,4 +423,5 @@ setInterval(() => {
 
 let stage3 = ["Vitality", "Natus Vincere", "FURIA", "Aurora", "PARIVISION", "Falcons", "MOUZ", "The MongolZ"];
 let stage2 = ["9z", "Astralis", "Spirit", "FUT", "G2", "Monte", "paiN", "Legacy"];
-let stage1 = ["GamerLegion", "BetBoom", "B8", "HEROIC"];
+let stage1 = ["GamerLegion", "BetBoom", "B8", "HEROIC", "BIG", "SINNERS", "M80", "NRG", "Sharks", "Gaimin Gladiators", "MIBR", "Liquid", "TYLOO", "Lynn Vision", "THUNDER dOWNUNDER", "FlyQuest"];
+

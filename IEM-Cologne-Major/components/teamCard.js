@@ -11,7 +11,7 @@ class TeamCard extends HTMLElement {
             this.shadowRoot.innerHTML = `
             <link rel="stylesheet" href="/teamCard.css">
             <div id="left">
-                <img src="${this.team.name}.png" alt="${this.team.name} Logo">
+                <img title="${this.team.name}" src="${this.team.name}.png" alt="${this.team.name} Logo">
                 <h2>${teamCountry.flag} ${this.team.alias}</h2>
             </div>
             <div id="right"></div>
@@ -20,7 +20,7 @@ class TeamCard extends HTMLElement {
             this.shadowRoot.innerHTML = `
             <link rel="stylesheet" href="/teamCard.css">
             <div id="left">
-                <img src="${this.team.name}.png" alt="${this.team.name} Logo">
+                <img title="${this.team.name}" src="${this.team.name}.png" alt="${this.team.name} Logo">
                 <h2>${teamCountry.flag} ${this.team.name}</h2>
             </div>
             <div id="right"></div>
@@ -33,7 +33,7 @@ class TeamCard extends HTMLElement {
             let p = document.createElement("p");
             p.textContent = `${playerCountry.flag} ${this.players[key].ign}`;
             this.shadowRoot.querySelector("#right").appendChild(p);
-            p.addEventListener("click", () => {
+            p.addEventListener("click", (e) => {
                 let popup = document.querySelector(`.popup`);
                 let splitName = this.players[key].name.split(" ");
                 if (splitName.length === 2) {
@@ -54,6 +54,13 @@ class TeamCard extends HTMLElement {
                     `;
                 }
                 popup.style.display = "flex";
+                if (e.target.offsetParent.id === "stage3") {
+                    document.querySelector(".player").style.marginTop = "-45%";
+                } else if (e.target.offsetParent.id === "stage2") {
+                    document.querySelector(".player").style.marginTop = "-5%";
+                } else if (e.target.offsetParent.id) {
+                    document.querySelector(".player").style.marginTop = "45%";
+                }
             });
         }
     }
