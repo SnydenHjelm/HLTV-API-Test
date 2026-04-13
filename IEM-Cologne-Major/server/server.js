@@ -49,6 +49,52 @@ try {
         });
     });
 
+    app.delete("/team", async (req, resp) => {
+        const body = req.body;
+
+        if (typeof body !== "object" || Array.isArray(body)) {
+            resp.status(400).json({error: "Invalid request-body"});
+            return;
+        }
+
+        fs.readFile("../db/db.json", (err, data) => {
+            if (err) {
+                console.log(err);
+                return;
+            }
+
+            let db = JSON.parse(data);
+            let team = db.teams.find((x) => x.name.toLowerCase() === body.team.toLowerCase());
+            if (!team) {
+                resp.status(404).json({error: "Team not found"});
+                return;
+            }
+
+            let index = db.teams.findIndex((x) => x.name.toLowerCase() === body.team.toLowerCase());
+            db.teams.splice(index, 1);
+
+            fs.writeFile("../db/db.json", JSON.stringify(db), (err) => {
+                if (err) {
+                    console.log(err);
+                    return;
+                } else {
+                    console.log("team deleted");
+                    resp.json({success: "team deleted"});
+                }
+            })
+        })
+    })
+
+    app.get("/teams", async (req, resp) => {
+        fs.readFile("../db/db.json", (err, data) => {
+            if (err) {
+                console.log(err);
+                return;
+            }
+            resp.json(JSON.parse(data).teams);
+        });
+    });
+
     app.get("/player", async (req, resp) => {
         let id = parseInt(req.query.id);
         const player = await HLTV.getPlayer({id: id});
@@ -70,7 +116,7 @@ try {
         const body = req.body;
 
         if (typeof body !== "object" || Array.isArray(body)) {
-            resp.json({error: "Invalid request-body"});
+            resp.status(400).json({error: "Invalid request-body"});
         }
 
         fs.readFile("../db/db.json", (err, data) => {
@@ -89,16 +135,38 @@ try {
                 }
             });
         })
-    })
+    });
 
-    app.get("/teams", async (req, resp) => {
+    app.delete("/players", async (req, resp) => {
+        const body = req.body;
+        if (typeof body !== "object" || Array.isArray(body)) resp.status(400).json({error: "Invalid request-body"});
+
         fs.readFile("../db/db.json", (err, data) => {
             if (err) {
                 console.log(err);
                 return;
             }
-            resp.json(JSON.parse(data).teams);
-        });
+
+            let db = JSON.parse(data);
+            let teamPlayers = db.players.find((x) => x.name.toLowerCase() === body.team.toLowerCase());
+            if (!teamPlayers) {
+                resp.status(404).json({error: "Team not found"});
+                return;
+            }
+
+            let index = db.players.findIndex((x) => x.name.toLowerCase() === body.team.toLowerCase());
+            db.players.splice(index, 1);
+
+            fs.writeFile("../db/db.json", JSON.stringify(db), (err) => {
+                if (err) {
+                    console.log(err);
+                    return;
+                } else {
+                    console.log("team players deleted");
+                    resp.json({success: "team players deleted"});
+                }
+            })
+        })
     });
 
     app.listen(3000, () => {
